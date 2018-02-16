@@ -63,15 +63,24 @@ def get_time(data):
     output = list(accumulate(readings))
     return output
 
+
+
+
+
+
+
+
+
+
 def func(x, w, a, b):
     return w*np.exp(-a*x)+b
  
 def poly_func(x,a,b,c,d,e,f):
     return a*x**5+b*x**4+c*x**3+d*x**2+e*x+f
 
-def create_residuals(velocity,time,w,a,b):
-    fitted_data = func(np.array(time),w ,a, b)
-    return np.array(velocity)-fitted_data
+def create_residuals(real_function,time,constant1,constant2,constant3):
+    fitted_data = func(np.array(time),constant1,constant2,constant3)
+    return np.array(real_function)-fitted_data
 
 def main():
     data = splitupbyte(tp)
@@ -99,7 +108,7 @@ def main():
     gs = gridspec.GridSpec(3, 1)    
     params, pcov = optimize.curve_fit(func, time, velocity)
     std_dev = np.sqrt(np.diag(pcov))
-    fig = plt.figure(num=1, figsize=(16, 12))
+    fig = plt.figure(num=1, figsize=(10, 20))
     ax = fig.add_subplot(gs[0])
     ax.set_xlabel("Time/s", fontsize=16)
     ax.set_ylabel("Rotations per minute/rpm", fontsize=14)
@@ -123,7 +132,7 @@ def main():
     ax2.text(20.00, 1.50, 'a = ' + str(params2[0])+'±'+ str(std_dev2[0]) + '\n' + 'b = ' + str(params2[1])+'±'+ str(std_dev2[1]) 
 +'\n'+'c = '+str(params2[2])+'±'+ str(std_dev2[2])+'\n' + 'd = '+str(params2[3])+'±'+ str(std_dev2[3])+'\n'+'e = '+str(params2[4])+'±'+ str(std_dev2[4]))
     ax2.legend()
-    
+   
     plt.savefig('Figure2.jpg')
     
 main()
